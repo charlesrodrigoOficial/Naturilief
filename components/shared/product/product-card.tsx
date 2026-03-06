@@ -7,25 +7,31 @@ import Rating from "./rating";
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <Card className="w-full max-w-sm h-full overflow-hidden flex flex-col">
-      <CardHeader className="p-0">
-        <Link href={`/product/${product.slug}`} className="relative block aspect-square w-full">
-          <Image
-            src={product.images[0]}
-            alt={product.name}
-            fill
-            className="object-cover"
-            sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
-            priority={true}
-          />
+    <Card className="w-full h-full flex flex-col">
+      <CardHeader className="p-0 ">
+        <Link href={`/product/${product.slug}`} className="block">
+          <div className="h-56 w-full flex items-center justify-center overflow-hidden rounded-t-xl bg-white">
+            <Image
+              src={product.images[0]}
+              alt={product.name}
+              height={300}
+              width={300}
+              priority={true}
+            />
+          </div>
         </Link>
       </CardHeader>
-      <CardContent className="p-4 flex flex-1 flex-col gap-4">
-        <div className="text-xs">{product.brand}</div>
-        <Link href={`/product/${product.slug}`} className="min-h-10">
-          <h2 className="text-sm font-medium leading-5">{product.name}</h2>
+
+      <CardContent className="p-4 flex flex-col gap-2 flex-1">
+        <div className="text-xs text-muted-foreground">{product.brand}</div>
+
+        <Link href={`/product/${product.slug}`}>
+          <h2 className="text-sm font-medium leading-snug min-h-[40px] line-clamp-2">
+            {product.name}
+          </h2>
         </Link>
-        <div className="flex-between gap-4 mt-auto">
+
+        <div className="flex items-center justify-between gap-4 mt-auto">
           <Rating value={Number(product.rating)} />
           {product.stock > 0 ? (
             <ProductPrice value={Number(product.price)} />
