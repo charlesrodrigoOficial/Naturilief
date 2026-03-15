@@ -10,34 +10,39 @@ const SuccessPage = async (props: {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ payment_intent: string }>;
 }) => {
-    const { id } =  await props.params; 
-    const { payment_intent: paymentIntentId } = await props.searchParams;
+  const { id } = await props.params;
+  const { payment_intent: paymentIntentId } = await props.searchParams;
 
-    //Fetch order
-     const order = await getOrderById(id);
-     if (!order) notFound();
+  //Fetch order
+  const order = await getOrderById(id);
+  if (!order) notFound();
 
-     //Retrieve payment intent
-     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+  //Retrieve payment intent
+  const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
-     //check payment intent is valid
-     if(paymentIntent.metadata.orderId == null || paymentIntent.metadata.orderId !== order.id.toString()) {
-        return notFound();
-     }
+  //check payment intent is valid
+  if (
+    paymentIntent.metadata.orderId == null ||
+    paymentIntent.metadata.orderId !== order.id.toString()
+  ) {
+    return notFound();
+  }
 
-     //Check if payment is successfull
-     const isSuccess = paymentIntent.status === "succeeded";
+  //Check if payment is successfull
+  const isSuccess = paymentIntent.status === "succeeded";
 
-     if(!isSuccess) return redirect(`/order/${id}`)
-  return <div className="max-w-4xl w-full mx-auto space-y-8">
-    <div className="flex flex-col gap-6 items-center">
+  if (!isSuccess) return redirect(`/order/${id}`);
+  return (
+    <div className="max-w-4xl w-full mx-auto space-y-8">
+      <div className="flex flex-col gap-6 items-center">
         <h1 className="h1-bold">Thank for your purchase</h1>
         <div>We are processing your order.</div>
         <Button asChild>
-            <Link href={`/order${id}`}>View Order</Link>
+          <Link href={`/order${id}`}>View Order</Link>
         </Button>
+      </div>
     </div>
-  </div>;
+  );
 };
 
 export default SuccessPage;

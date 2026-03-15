@@ -45,13 +45,13 @@ const ProductForm = ({
 
   const form = useForm<z.infer<typeof insterProductSchema>>({
     resolver: zodResolver(
-      type === "Create" ? insterProductSchema : updateProductSchema
+      type === "Create" ? insterProductSchema : updateProductSchema,
     ) as Resolver<z.infer<typeof insterProductSchema>>, //need to check
     defaultValues: type === "Update" ? product : productDefualtValues,
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof insterProductSchema>> = async (
-    values
+    values,
   ) => {
     //On Create
     if (type === "Create") {
@@ -95,8 +95,8 @@ const ProductForm = ({
 
   const images = form.watch("images");
   const isFeatured = form.watch("isFeatured");
-  const banner = form.watch("banner");
-
+  const rawBanner = form.watch("banner");
+  const banner = rawBanner?.trim() || null;
   return (
     <Form {...form}>
       <form
@@ -149,7 +149,7 @@ const ProductForm = ({
                       onClick={() => {
                         form.setValue(
                           "slug",
-                          slugify(form.getValues("name"), { lower: true })
+                          slugify(form.getValues("name"), { lower: true }),
                         );
                       }}
                     >
@@ -309,18 +309,27 @@ const ProductForm = ({
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>Is Feartured</FormLabel>
+                    <FormLabel>Is Feartured</FormLabel> c
                   </FormItem>
                 )}
               />
               {isFeatured && banner && (
-                <Image
-                  src={banner}
-                  alt="banner image"
-                  className="w-full object-cover object-center rounded-sm"
-                  width={1920}
-                  height={680}
-                />
+                <div className="space-y-3">
+                  <Image
+                    src={banner}
+                    alt="banner image"
+                    className="w-full object-cover object-center rounded-sm"
+                    width={1920}
+                    height={680}
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={() => form.setValue("banner", null)}
+                  >
+                    Remove Banner
+                  </Button>
+                </div>
               )}
               {isFeatured && !banner && (
                 <UploadButton
