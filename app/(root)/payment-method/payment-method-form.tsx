@@ -38,6 +38,19 @@ const PaymentMethodForm = ({
 
   const [isPending, startTransition] = useTransition();
 
+  const getPaymentMethodLabel = (paymentMethod: string) => {
+    switch (paymentMethod) {
+      case "CashOnDelivery":
+        return "Cash On Delivery";
+      case "ApplePay":
+        return "Apple Pay";
+      case "Stripe":
+        return "Card (Stripe)";
+      default:
+        return paymentMethod;
+    }
+  };
+
   const onSubmit = async (values: z.infer<typeof paymentMethodSchema>) => {
     startTransition(async () => {
       const res = await updateUserPaymentMethod(values);
@@ -90,7 +103,7 @@ const PaymentMethodForm = ({
                               />
                             </FormControl>
                             <FormLabel className="font-normal">
-                              {paymentMethod}
+                              {getPaymentMethodLabel(paymentMethod)}
                             </FormLabel>
                           </FormItem>
                         ))}
