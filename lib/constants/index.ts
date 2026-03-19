@@ -28,11 +28,18 @@ export const shippingAddressDefultValues = {
   country: "",
 };
 
+const SUPPORTED_PAYMENT_METHODS = ["PayPal", "Stripe", "CashOnDelivery"];
+
 export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
-  ? process.env.PAYMENT_METHODS.split(", ")
-  : ["PayPal", "Stripe", "ApplePay", "CashOnDelivery"];
-export const DEFAULT_PAYMENT_METHOD =
-  process.env.DEFAULT_PAYMENT_METHOD || "PayPal";
+  ? process.env.PAYMENT_METHODS.split(", ").filter((method) =>
+      SUPPORTED_PAYMENT_METHODS.includes(method)
+    )
+  : SUPPORTED_PAYMENT_METHODS;
+export const DEFAULT_PAYMENT_METHOD = PAYMENT_METHODS.includes(
+  process.env.DEFAULT_PAYMENT_METHOD || ""
+)
+  ? (process.env.DEFAULT_PAYMENT_METHOD as string)
+  : "PayPal";
 
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 6;
 

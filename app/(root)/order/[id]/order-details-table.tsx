@@ -28,7 +28,6 @@ import {
   updateOrderToPaidCOD,
   deliverOrder,
 } from "@/lib/actions/order.actions";
-import { date } from "zod";
 import StripePayment from "./stripe-payment";
 
 const OrderDetailsTable = ({
@@ -59,8 +58,6 @@ const OrderDetailsTable = ({
   const paymentMethodLabel =
     paymentMethod === "CashOnDelivery"
       ? "Cash On Delivery"
-      : paymentMethod === "ApplePay"
-      ? "Apple Pay"
       : paymentMethod === "Stripe"
       ? "Visa / Mastercard"
       : paymentMethod;
@@ -269,18 +266,7 @@ const OrderDetailsTable = ({
                   priceInCents={Number(order.totalPrice) * 100}
                   orderId={order.id}
                   clientSecret={stripeClientSecret}
-                  mode="stripe"
                   title="Card Checkout"
-                />
-              )}
-
-              {/* Apple Pay */}
-              {!isPaid && paymentMethod === "ApplePay" && (
-                <StripePayment
-                  priceInCents={Number(order.totalPrice) * 100}
-                  orderId={order.id}
-                  clientSecret={stripeClientSecret}
-                  mode="applePay"
                 />
               )}
 

@@ -42,8 +42,6 @@ const PaymentMethodForm = ({
     switch (paymentMethod) {
       case "CashOnDelivery":
         return "Cash On Delivery";
-      case "ApplePay":
-        return "Apple Pay";
       case "Stripe":
         return "Visa / Mastercard";
       default:

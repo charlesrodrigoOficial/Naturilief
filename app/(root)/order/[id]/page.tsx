@@ -26,7 +26,6 @@ const OrderDetailsPage = async (props: {
   const isCardPaymentMethod = order.paymentMethod === "Stripe";
 
   // Create card payment intent on the server.
-  // Apple Pay uses its dedicated API route.
   if (isCardPaymentMethod && !order.isPaid) {
     //Init stripe instance
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);

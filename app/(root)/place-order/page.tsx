@@ -41,8 +41,6 @@ const PlaceOrderPage = async () => {
   const paymentMethodLabel =
     user.paymentMethod === "CashOnDelivery"
       ? "Cash On Delivery"
-      : user.paymentMethod === "ApplePay"
-      ? "Apple Pay"
       : user.paymentMethod === "Stripe"
       ? "Visa / Mastercard"
       : user.paymentMethod;
